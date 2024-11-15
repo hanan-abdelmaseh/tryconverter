@@ -1,0 +1,6 @@
+<div class="pagination">
+   
+    <a  *ngFor="let page of pages" (click)="changePage.emit(page)"
+     href="#">{{page}}</a>
+ 
+  </div>

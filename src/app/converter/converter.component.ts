@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ConverterService } from './services/converter.service';
-import { Rates } from './Models/converter.model';
+import { Rates, Symbols } from './Models/converter.model';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -10,6 +10,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ConverterComponent implements OnInit{
   ratesList!:Rates;
+  currencyNamesList!:Symbols;
   baseCurrency:string='';
   baseValue:number= 0;
   currencyExchangeValue:number =0 ;
@@ -33,21 +34,25 @@ export class ConverterComponent implements OnInit{
 
 
   getCurrencyValues(){
-    this._ConverterService.getCurrencyValues().subscribe((res)=>{
+    this._ConverterService.getCureenciesNames().subscribe((res)=>{
       console.log(res);
-      this.ratesList= res.rates;
-      this.baseCurrency= res.base;
-   this.baseValue = res.rates['EUR']
-      console.log(this.ratesList);
-      console.log(this.baseCurrency);
-      console.log(this.baseValue)
+      this.currencyNamesList= res.symbols;
+     
     })
   }
 
 
   convertCurrency(currencyValues:any){
-    console.log(currencyValues)
-this.currencyExchangeValue = currencyValues.amount * currencyValues.currencyTo;
+    console.log(currencyValues);
+    let data = currencyValues.value
+    console.log(data);
+
+//this.currencyExchangeValue = data.amount * data.currencyTo;
+//using api  
+this._ConverterService.convertCurrency(data.fromCurrency, data.toCurrency,data.amount).subscribe((res)=>{
+  console.log(res)
+})
 
   }
+
 }
